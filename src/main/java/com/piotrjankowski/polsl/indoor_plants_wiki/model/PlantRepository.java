@@ -1,8 +1,15 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-@RepositoryRestResource()
-public interface PlantRepository extends JpaRepository<Plant, Integer> {
+import java.util.List;
+import java.util.Optional;
+
+public interface PlantRepository {
+    List<Plant> findAll();
+    Page<Plant> findAll(Pageable page);
+    Optional<Plant> findById(Integer id);
+    boolean existsById(Integer id);
+    Plant save(Plant entity);
 }

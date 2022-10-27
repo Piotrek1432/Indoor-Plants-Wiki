@@ -12,12 +12,13 @@ public class Plant {
     @NotBlank(message = "Plant name cannot be empty")
     private String name;
     private String description;
-
+    @Embedded
+    private Audit audit = new Audit();
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -35,5 +36,10 @@ public class Plant {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void updateFrom(final Plant toUpdate){
+        name = toUpdate.name;
+        description = toUpdate.description;
     }
 }
