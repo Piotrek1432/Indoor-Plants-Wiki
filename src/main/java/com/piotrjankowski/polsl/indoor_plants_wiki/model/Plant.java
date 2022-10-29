@@ -1,4 +1,5 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,9 @@ public class Plant {
     private String description;
     @Embedded
     private Audit audit = new Audit();
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     public int getId() {
         return id;
     }
