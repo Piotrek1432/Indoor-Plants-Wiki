@@ -5,6 +5,6 @@ import java.util.Optional;
 
 public interface CategoryRepository {
     List<Category> findAll();
-    Optional<Category> findById();
+    Optional<Category> findById(Integer id);
     Category save(Category categoryToSave);
 }

@@ -18,6 +18,13 @@ public class Plant {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public Plant() {
+    }
+    public Plant(String name, String description) {
+    }
+
+
     public int getId() {
         return id;
     }
