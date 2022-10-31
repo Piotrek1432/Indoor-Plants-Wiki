@@ -23,7 +23,7 @@ public class CategoryWriteModel {
         this.description = description;
     }
 
-    public Category roCategory(){
+    public Category toCategory(){
         var result = new Category();
         result.setName(name);
         result.setDescription(description);

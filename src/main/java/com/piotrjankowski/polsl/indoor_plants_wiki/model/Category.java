@@ -20,6 +20,10 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<Plant> plants;
 
+    public Category(){
+
+    }
+
     public int getId() {
         return id;
     }
