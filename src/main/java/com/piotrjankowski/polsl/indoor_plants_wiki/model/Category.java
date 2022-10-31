@@ -1,29 +1,28 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
+
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
-@Table(name = "plants")
-public class Plant {
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    @NotBlank(message = "Plant name cannot be empty")
+    @NotBlank(message = "Category name cannot be empty")
     private String name;
     private String description;
     @Embedded
     private Audit audit = new Audit();
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany(mappedBy = "category")
+    private Set<Plant> plants;
 
-    public Plant() {
-    }
-    public Plant(String name, String description) {
-    }
+    public Category(){
 
+    }
 
     public int getId() {
         return id;
@@ -49,8 +48,16 @@ public class Plant {
         this.description = description;
     }
 
-    public void updateFrom(final Plant toUpdate){
+    public void updateFrom(final Category toUpdate){
         name = toUpdate.name;
         description = toUpdate.description;
+    }
+
+    public Set<Plant> getPlants() {
+        return plants;
+    }
+
+    public void setPlants(Set<Plant> plants) {
+        this.plants = plants;
     }
 }
