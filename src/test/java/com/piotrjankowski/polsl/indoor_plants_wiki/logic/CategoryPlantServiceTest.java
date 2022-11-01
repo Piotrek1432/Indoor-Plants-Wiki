@@ -21,13 +21,9 @@ class CategoryPlantServiceTest {
         //given:
         var mockCategoryRepository = mock(CategoryRepository.class);
         when(mockCategoryRepository.findById(500)).thenReturn(Optional.empty());
+
         //system under test:
         var toTest = new CategoryPlantService(mockCategoryRepository);
-
-        //when + then:
-//        assertThatThrownBy(() -> {
-//            toTest.changeDescription(1, "desc");
-//        }).isInstanceOf(IllegalStateException.class);
 
         //when:
         Exception exception = (Exception) catchThrowable(() ->toTest.changeDescription(500, "desc"));
@@ -43,6 +39,7 @@ class CategoryPlantServiceTest {
     void changeDescriptionPositiveResult(){
         //given:
         InMemoryCategoryRepository inMemoryCategoryRepo = inMemoryCategoryRepository();
+
         //system under test:
         var toTest = new CategoryPlantService(inMemoryCategoryRepo);
 

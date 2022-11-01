@@ -22,6 +22,8 @@ public class Plant {
     public Plant() {
     }
     public Plant(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
 

@@ -33,6 +33,14 @@ public class PlantController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/plants/{id}")
+    ResponseEntity<Plant> readPlant(@PathVariable int id){
+        logger.info("");
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @Transactional
     @RequestMapping(method = RequestMethod.PUT, path = "/plants/{id}")
     ResponseEntity<?> updatePlant(
