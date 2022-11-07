@@ -1,5 +1,6 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model.projection;
 
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 
 public class CategoryPlantWriteModel {
@@ -27,7 +28,7 @@ public class CategoryPlantWriteModel {
         this.description = description;
     }
 
-    public Plant toPlant(){
-        return new Plant(name, description);
+    public Plant toPlant(final Category category){
+        return new Plant(name, description, category);
     }
 }

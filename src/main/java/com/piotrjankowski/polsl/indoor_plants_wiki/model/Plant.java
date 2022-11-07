@@ -21,9 +21,17 @@ public class Plant {
 
     public Plant() {
     }
+
     public Plant(String name, String description) {
+        this(name,description,null);
+    }
+
+    public Plant(String name, String description, Category category) {
         this.name = name;
         this.description = description;
+        if(category != null) {
+            this.category = category;
+        }
     }
 
 
