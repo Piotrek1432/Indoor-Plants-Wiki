@@ -38,6 +38,11 @@ public class TestConfiguration {
             }
 
             @Override
+            public List<Plant> findByName(String name) {
+                return null;
+            }
+
+            @Override
             public boolean existsById(Integer id) {
                 return plants.containsKey(id);
             }

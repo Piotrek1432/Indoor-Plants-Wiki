@@ -6,4 +6,8 @@ spring:
       path: '/console'
   datasource.url: 'jdbc:h2:file:/Users/Piotr/bazaH2/baza'
   jpa.hibernate.ddl-auto: update
-plant.allowMultiplePlantsFromTemplate: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

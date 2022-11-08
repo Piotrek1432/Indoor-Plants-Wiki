@@ -1,5 +1,6 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
+import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class PlantControllerLightIntegrationTest {
 
     @MockBean
     private PlantRepository repo;
+
+    @MockBean
+    private PlantService service;
 
     @Test
     void httpGet_returnsGivenPlant() throws Exception {

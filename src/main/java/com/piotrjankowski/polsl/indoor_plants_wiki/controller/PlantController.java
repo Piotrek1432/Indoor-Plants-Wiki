@@ -1,5 +1,6 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
+import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import org.slf4j.Logger;
@@ -11,29 +12,42 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
+@RequestMapping(path = "/plants")
 public class PlantController {
     private static final Logger logger = LoggerFactory.getLogger(PlantController.class);
     private final PlantRepository repository;
+    private final PlantService service;
 
-    public PlantController(PlantRepository repository) {
+    public PlantController(PlantRepository repository, PlantService service) {
         this.repository = repository;
+        this.service = service;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/plants", params = {"!page","!size","!sort"})
+    /**
+     * Experimental async
+     **/
+    @RequestMapping(method = RequestMethod.GET, path = "/readAllPlantsAsync", params = {"!page","!size","!sort"})
+    CompletableFuture<ResponseEntity<List<Plant>>> readAllPlantsAsync(){
+        logger.info("Exposing all plants!");
+        return service.findAllAsync().thenApply(ResponseEntity::ok);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = {"!page","!size","!sort"})
     ResponseEntity<List<Plant>> readAllPlants(){
         logger.info("Exposing all plants!");
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/plants")
+    @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<List<Plant>> readAllPlants(Pageable page){
         logger.info("Exposing plants, pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/plants/{id}")
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     ResponseEntity<Plant> readPlant(@PathVariable int id){
         logger.info("");
         return repository.findById(id)
@@ -41,8 +55,13 @@ public class PlantController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "search/name")
+    ResponseEntity<List<Plant>> search(@RequestParam(required = false) String name){
+        return ResponseEntity.ok(repository.findByName(name));
+    }
+
     @Transactional
-    @RequestMapping(method = RequestMethod.PUT, path = "/plants/{id}")
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}")
     ResponseEntity<?> updatePlant(
             @PathVariable
             int id,
@@ -63,7 +82,7 @@ public class PlantController {
     }
 
     @Transactional
-    @RequestMapping(method = RequestMethod.PATCH, path = "/plants/{id}")
+    @RequestMapping(method = RequestMethod.PATCH, path = "/{id}")
     public ResponseEntity<?> patchPlant(
             @PathVariable
             int id
