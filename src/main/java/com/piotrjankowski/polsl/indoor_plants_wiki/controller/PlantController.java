@@ -49,7 +49,7 @@ public class PlantController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     ResponseEntity<Plant> readPlant(@PathVariable int id){
-        logger.info("");
+        logger.info("Exposing all plants!");
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
