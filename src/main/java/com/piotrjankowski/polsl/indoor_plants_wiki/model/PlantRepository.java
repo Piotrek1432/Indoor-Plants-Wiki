@@ -10,6 +10,7 @@ public interface PlantRepository {
     List<Plant> findAll();
     Page<Plant> findAll(Pageable page);
     Optional<Plant> findById(Integer id);
+    List<Plant> findByName(String name);
     boolean existsById(Integer id);
     boolean existsByCategory_id(Integer categoryId);
     Plant save(Plant entity);
