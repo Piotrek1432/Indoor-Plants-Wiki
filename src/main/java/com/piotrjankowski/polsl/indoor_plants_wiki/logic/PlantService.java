@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@Service
 public class PlantService {
     public static final Logger logger = LoggerFactory.getLogger(PlantService.class);
     private final PlantRepository repository;
