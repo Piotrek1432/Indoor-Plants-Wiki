@@ -42,7 +42,7 @@ public class CategoryWriteModel {
         result.setDescription(description);
         result.setPlants(
                 plants.stream()
-                        .map(sourece -> sourece.toPlant(result))
+                        .map(source -> source.toPlant(result))
                         .collect(Collectors.toSet())
         );
         return result;

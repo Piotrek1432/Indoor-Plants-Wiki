@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -21,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/categories")
+@CrossOrigin("http://localhost:3000")
 public class CategoryController {
     public static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
     private final CategoryRepository repository;
@@ -31,7 +29,6 @@ public class CategoryController {
         this.service = service;
     }
 
-    @Transactional
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<CategoryReadModel> createNewCategory(
             @RequestBody
@@ -47,5 +44,21 @@ public class CategoryController {
     ResponseEntity<List<CategoryReadModel>> readAllCategories(){
         logger.info("Exposing all categories!");
         return ResponseEntity.ok(service.readAllCategories());
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH, path = "{id}")
+    ResponseEntity<?> changeDescription(
+            @PathVariable
+            int id,
+            @RequestBody
+            @Valid
+            String newDesc){
+        service.changeDescription(id,newDesc);
+        return  ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
+        return ResponseEntity.notFound().build();
     }
 }

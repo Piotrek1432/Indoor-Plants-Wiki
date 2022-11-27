@@ -6,16 +6,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CategoryReadModel {
+    private int id;
     private String name;
     private String description;
     private Set<CategoryPlantReadModel> plants;
 
     public CategoryReadModel(Category source){
+        id = source.getId();
         name = source.getName();
         description = source.getDescription();
         plants = source.getPlants().stream()
                 .map(CategoryPlantReadModel::new)
                 .collect(Collectors.toSet());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

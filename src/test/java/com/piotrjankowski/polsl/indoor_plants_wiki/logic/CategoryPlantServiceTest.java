@@ -2,14 +2,13 @@ package com.piotrjankowski.polsl.indoor_plants_wiki.logic;
 
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.CategoryRepository;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +22,7 @@ class CategoryPlantServiceTest {
         when(mockCategoryRepository.findById(500)).thenReturn(Optional.empty());
 
         //system under test:
-        var toTest = new CategoryPlantService(mockCategoryRepository);
+        var toTest = new CategoryPlantService(mockCategoryRepository, null);
 
         //when:
         Exception exception = (Exception) catchThrowable(() ->toTest.changeDescription(500, "desc"));
@@ -41,7 +40,7 @@ class CategoryPlantServiceTest {
         InMemoryCategoryRepository inMemoryCategoryRepo = inMemoryCategoryRepository();
 
         //system under test:
-        var toTest = new CategoryPlantService(inMemoryCategoryRepo);
+        var toTest = new CategoryPlantService(inMemoryCategoryRepo, null);
 
         //when:
         toTest.changeDescription(1,"new");
