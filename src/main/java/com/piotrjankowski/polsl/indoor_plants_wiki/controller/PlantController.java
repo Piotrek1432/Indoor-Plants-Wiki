@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(path = "/plants")
+@CrossOrigin("http://localhost:3000")
 public class PlantController {
     private static final Logger logger = LoggerFactory.getLogger(PlantController.class);
     private final PlantRepository repository;
@@ -58,6 +59,17 @@ public class PlantController {
     @RequestMapping(method = RequestMethod.GET, path = "search/name")
     ResponseEntity<List<Plant>> search(@RequestParam(required = false) String name){
         return ResponseEntity.ok(repository.findByName(name));
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    ResponseEntity<?> addPlant(
+            @RequestBody
+            @Valid
+            Plant toAdd
+    ){
+        repository.save(toAdd);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Transactional

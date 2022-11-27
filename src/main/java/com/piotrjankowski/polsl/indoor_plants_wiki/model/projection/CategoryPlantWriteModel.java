@@ -7,10 +7,7 @@ public class CategoryPlantWriteModel {
     private String name;
     private String description;
 
-    public CategoryPlantWriteModel(Plant source){
-        name = source.getName();
-        description = source.getDescription();
-    }
+
 
     public String getName() {
         return name;

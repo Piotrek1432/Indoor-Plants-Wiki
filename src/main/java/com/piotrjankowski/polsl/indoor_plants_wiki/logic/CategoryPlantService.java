@@ -23,6 +23,7 @@ public class CategoryPlantService {
 
     public CategoryReadModel createCategory(CategoryWriteModel source){
         Category result = repository.save(source.toCategory());
+        result.getPlants().forEach(plant -> plantRepository.save(plant));
         return new CategoryReadModel(result);
     }
 
@@ -33,7 +34,7 @@ public class CategoryPlantService {
 
     public void changeDescription(int categoryId, String newDesc){
         Category result = repository.findById(categoryId)
-                .orElseThrow(() -> new IllegalStateException("Category with ID: " + String.valueOf(categoryId) + " does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("Category with ID: " + String.valueOf(categoryId) + " does not exist"));
         result.setDescription(newDesc);
         repository.save(result);
     }
