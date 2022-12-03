@@ -1,5 +1,7 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
+
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +20,9 @@ public class Plant {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    private User author;
 
     public Plant() {
     }

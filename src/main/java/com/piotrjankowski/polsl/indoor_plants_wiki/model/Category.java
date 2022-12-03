@@ -1,13 +1,14 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
 
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -19,6 +20,9 @@ public class Category {
     private Audit audit = new Audit();
     @OneToMany(mappedBy = "category")
     private Set<Plant> plants;
+
+    @ManyToOne
+    private User author;
 
     public Category(){
 
