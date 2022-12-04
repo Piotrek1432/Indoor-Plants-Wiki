@@ -10,8 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface SqlPlantRepository extends PlantRepository, JpaRepository<Plant, Integer> {
     @Override
-    @Query(nativeQuery = true, value = "select count(*) > 0 from PLANTS where ID = ?1")
-    boolean existsById(@Param("id") Integer id);
-    @Override
-    boolean existsByCategory_id(Integer categoryId);
+    boolean existsById(Integer id);
 }

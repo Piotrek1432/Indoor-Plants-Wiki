@@ -23,7 +23,7 @@ public class CategoryPlantService {
 
     public CategoryReadModel createCategory(CategoryWriteModel source){
         Category result = repository.save(source.toCategory());
-        result.getPlants().forEach(plant -> plantRepository.save(plant));
+        result.getAssignedPlants().forEach(plant -> plantRepository.save(plant));
         return new CategoryReadModel(result);
     }
 

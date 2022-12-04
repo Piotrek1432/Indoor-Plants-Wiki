@@ -18,8 +18,8 @@ public class Category {
     private String description;
     @Embedded
     private Audit audit = new Audit();
-    @OneToMany(mappedBy = "category")
-    private Set<Plant> plants;
+    @ManyToMany
+    private Set<Plant> assignedPlants;
 
     @ManyToOne
     private User author;
@@ -57,11 +57,19 @@ public class Category {
         description = toUpdate.description;
     }
 
-    public Set<Plant> getPlants() {
-        return plants;
+    public Set<Plant> getAssignedPlants() {
+        return assignedPlants;
     }
 
-    public void setPlants(Set<Plant> plants) {
-        this.plants = plants;
+    public void setAssignedPlants(Set<Plant> assignedPlants) {
+        this.assignedPlants = assignedPlants;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

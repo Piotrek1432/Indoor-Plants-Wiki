@@ -15,7 +15,7 @@ public class CategoryReadModel {
         id = source.getId();
         name = source.getName();
         description = source.getDescription();
-        plants = source.getPlants().stream()
+        plants = source.getAssignedPlants().stream()
                 .map(CategoryPlantReadModel::new)
                 .collect(Collectors.toSet());
     }

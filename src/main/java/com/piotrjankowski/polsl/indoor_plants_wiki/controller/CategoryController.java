@@ -6,6 +6,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.model.CategoryRepository;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryPlantWriteModel;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryReadModel;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@IllegalExceptionProcrssing
 @RequestMapping(path = "/categories")
 @CrossOrigin("http://localhost:3000")
 public class CategoryController {
@@ -29,6 +31,7 @@ public class CategoryController {
         this.service = service;
     }
 
+    @Timed(value = "category.create", histogram = true, percentiles = {0.5,0.95,0.99})
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<CategoryReadModel> createNewCategory(
             @RequestBody
@@ -55,10 +58,5 @@ public class CategoryController {
             String newDesc){
         service.changeDescription(id,newDesc);
         return  ResponseEntity.noContent().build();
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
-        return ResponseEntity.notFound().build();
     }
 }

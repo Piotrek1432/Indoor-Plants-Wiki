@@ -5,6 +5,8 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "plants")
@@ -17,9 +19,8 @@ public class Plant {
     private String description;
     @Embedded
     private Audit audit = new Audit();
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @ManyToMany(mappedBy = "assignedPlants")
+    private Set<Category> categories = new HashSet<>();
 
     @ManyToOne
     private User author;
@@ -34,9 +35,7 @@ public class Plant {
     public Plant(String name, String description, Category category) {
         this.name = name;
         this.description = description;
-        if(category != null) {
-            this.category = category;
-        }
+        categories.add(category);
     }
 
 

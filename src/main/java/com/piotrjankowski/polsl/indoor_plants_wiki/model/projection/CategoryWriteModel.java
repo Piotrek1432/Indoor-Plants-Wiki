@@ -40,7 +40,7 @@ public class CategoryWriteModel {
         var result = new Category();
         result.setName(name);
         result.setDescription(description);
-        result.setPlants(
+        result.setAssignedPlants(
                 plants.stream()
                         .map(source -> source.toPlant(result))
                         .collect(Collectors.toSet())

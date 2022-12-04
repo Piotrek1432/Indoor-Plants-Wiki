@@ -29,7 +29,7 @@ class CategoryPlantServiceTest {
 
         //then:
         assertThat(exception)
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Category with ID: 500 does not exist");
     }
 
