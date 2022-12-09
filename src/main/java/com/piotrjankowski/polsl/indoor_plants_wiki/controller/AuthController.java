@@ -3,6 +3,7 @@ package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 import com.piotrjankowski.polsl.indoor_plants_wiki.dto.AuthCredencialsRequest;
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.JwtUtil;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.LoginAnswer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,13 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin("http://localhost:3000")
 public class AuthController {
 
     @Autowired
@@ -36,13 +35,10 @@ public class AuthController {
                     );
 
             User user = (User) authenticate.getPrincipal();
-
+            LoginAnswer loginAnswer = new LoginAnswer();
+            loginAnswer.setAnswer(jwtUtil.generateToken(user));
             return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtUtil.generateToken(user)
-                    )
-                    .body(user);
+                    .body(loginAnswer);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
