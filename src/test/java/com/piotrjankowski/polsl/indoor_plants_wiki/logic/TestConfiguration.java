@@ -48,11 +48,6 @@ public class TestConfiguration {
             }
 
             @Override
-            public boolean existsByCategory_id(Integer categoryId) {
-                return false;
-            }
-
-            @Override
             public Plant save(Plant entity) {
                 int key = plants.size() + 1;
                 try{
