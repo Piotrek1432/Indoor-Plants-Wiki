@@ -67,4 +67,12 @@ public class Plant {
         name = toUpdate.name;
         description = toUpdate.description;
     }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 }

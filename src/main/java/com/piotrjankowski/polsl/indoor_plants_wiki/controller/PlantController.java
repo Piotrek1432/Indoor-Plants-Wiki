@@ -3,10 +3,13 @@ package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,5 +108,14 @@ public class PlantController {
         repository.findById(id).ifPresent(plant -> plant.setDescription("new desc.. test patch"));
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @RequestMapping(method = RequestMethod.POST, path = "/test")
+    public ResponseEntity<Plant> testApi(
+            @AuthenticationPrincipal User user
+    ){
+        Plant plant = service.testSave(user);
+        return ResponseEntity.ok(plant);
     }
 }
