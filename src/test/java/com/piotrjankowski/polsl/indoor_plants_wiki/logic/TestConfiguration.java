@@ -60,6 +60,11 @@ public class TestConfiguration {
                 plants.put(key, entity );
                 return plants.get(key);
             }
+
+            @Override
+            public boolean existsByName(String name) {
+                return false;
+            }
         };
     }
 

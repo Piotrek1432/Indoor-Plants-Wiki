@@ -35,7 +35,7 @@ public class PlantControllerLightIntegrationTest {
     @MockBean
     private PlantService service;
 
-    @Test
+/*    @Test
     void httpGet_returnsGivenPlant() throws Exception {
         //given
         when(repo.findById(anyInt()))
@@ -45,5 +45,5 @@ public class PlantControllerLightIntegrationTest {
         mockMvc.perform(get("/plants/123"))
                 .andDo(print())
                 .andExpect(content().string(containsString("\"name\":\"test plant\"")));
-    }
+    }*/
 }

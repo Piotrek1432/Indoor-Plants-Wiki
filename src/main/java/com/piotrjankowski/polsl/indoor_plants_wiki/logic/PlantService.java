@@ -30,6 +30,7 @@ public class PlantService {
         Plant plant = new Plant();
         plant.setName("testowa roslina");
         plant.setDescription("...");
+        plant.setAuthor(user);
         return repository.save(plant);
     }
 }

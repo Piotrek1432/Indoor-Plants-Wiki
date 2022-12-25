@@ -47,6 +47,7 @@ public class AuthController {
         newUser.setUsername(request.getUsername());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setRole("ROLE_USER");
         userRepository.save(newUser);
 
         return getResponseEntity(request);
@@ -64,6 +65,7 @@ public class AuthController {
             User user = (User) authenticate.getPrincipal();
             LoginAnswer loginAnswer = new LoginAnswer();
             loginAnswer.setAnswer(jwtUtil.generateToken(user));
+            loginAnswer.setRole(user.getRole());
             return ResponseEntity.ok()
                     .body(loginAnswer);
         } catch (BadCredentialsException ex) {
