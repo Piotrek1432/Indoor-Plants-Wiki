@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/administration")
+@RequestMapping(path = "/")
 @CrossOrigin("http://localhost:3000")
 public class AdministrationController {
     public static final Logger logger = LoggerFactory.getLogger(AdministrationController.class);

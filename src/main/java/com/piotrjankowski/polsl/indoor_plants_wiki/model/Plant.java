@@ -17,6 +17,7 @@ public class Plant {
     @NotBlank(message = "Plant name cannot be empty")
     private String name;
     private String description;
+    private String imagePath;
     @Embedded
     private Audit audit = new Audit();
     @ManyToMany(mappedBy = "assignedPlants")
@@ -74,5 +75,13 @@ public class Plant {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
