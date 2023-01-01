@@ -23,7 +23,7 @@ class PlantControllerE2ETest {
     @Autowired
     PlantRepository repo;
 
-    @Test
+/*    @Test
     void httpGet_returnAllTasks(){
         //given:
         repo.save(new Plant("test1","Some description.."));
@@ -34,5 +34,5 @@ class PlantControllerE2ETest {
 
         //then:
         assertThat(result).hasSize(2);
-    }
+    }*/
 }

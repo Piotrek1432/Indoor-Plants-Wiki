@@ -13,4 +13,5 @@ public interface PlantRepository {
     List<Plant> findByName(String name);
     boolean existsById(Integer id);
     Plant save(Plant entity);
+    boolean existsByName(String name);
 }

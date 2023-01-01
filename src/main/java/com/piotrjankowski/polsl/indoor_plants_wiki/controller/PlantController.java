@@ -1,15 +1,26 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
+import com.piotrjankowski.polsl.indoor_plants_wiki.logic.FileStorageService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.FileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -21,10 +32,12 @@ public class PlantController {
     private static final Logger logger = LoggerFactory.getLogger(PlantController.class);
     private final PlantRepository repository;
     private final PlantService service;
+    private  final FileStorageService fileStorageService;
 
-    public PlantController(PlantRepository repository, PlantService service) {
+    public PlantController(PlantRepository repository, PlantService service, FileStorageService fileStorageService) {
         this.repository = repository;
         this.service = service;
+        this.fileStorageService = fileStorageService;
     }
 
     /**
@@ -105,5 +118,46 @@ public class PlantController {
         repository.findById(id).ifPresent(plant -> plant.setDescription("new desc.. test patch"));
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    @RequestMapping(method = RequestMethod.POST, path = "/test")
+    public ResponseEntity<Plant> testApi(
+            @AuthenticationPrincipal User user
+            ){
+        Plant plant = service.testSave(user);
+        return ResponseEntity.ok(plant);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/imageTest")
+    public ResponseEntity<FileResponse> uploadFile(@RequestParam("file") MultipartFile file){
+        String fileName = fileStorageService.storeFile(file);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/plants/test/")
+                .path(fileName)
+                .toUriString();
+
+        FileResponse fileResponse = new FileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return new ResponseEntity<FileResponse>(fileResponse, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,path = "test/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request){
+        Resource resource = fileStorageService.loadFilesResource(fileName);
+
+        String contentType = null;
+
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        }catch(Exception ex){
+            System.out.println("Could not determine fileType");
+        }
+
+        if(contentType==null){
+            contentType = "application/octet-stream";
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
     }
 }

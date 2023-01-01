@@ -1,16 +1,15 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -21,14 +20,23 @@ public class User implements UserDetails {
     @NotBlank
     private String username;
     @NotBlank
+    @JsonIgnore
     private String password;
+    private String role;
     @Embedded
+    @JsonIgnore
     private Audit audit = new Audit();
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Plant> plants;
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    private Set<PlantChange> plantsChanges;
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Category> categories;
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Comment> comments;
 
     public User(){
@@ -95,9 +103,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new Role("ROLE_USER"));
-        return roles;
+        return Collections.singleton(new SimpleGrantedAuthority(role));
     }
     @Override
     public boolean isAccountNonExpired() {
@@ -114,5 +120,21 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<PlantChange> getPlantsChanges() {
+        return plantsChanges;
+    }
+
+    public void setPlantsChanges(Set<PlantChange> plantsChanges) {
+        this.plantsChanges = plantsChanges;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
