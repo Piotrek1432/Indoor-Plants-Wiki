@@ -6,6 +6,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 public class NewPlantWriteModel {
     private String name;
     private String description;
+    private String imageUri;
 
     public NewPlantWriteModel(){}
 
@@ -25,12 +26,22 @@ public class NewPlantWriteModel {
         this.description = description;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
     public PlantChange toPlantChange(User user) {
         var result = new PlantChange();
         result.setName(name);
         result.setDescription(description);
+        result.setImagePath(imageUri);
         result.setAuthor(user);
         result.setAccepted(false);
+        result.setRejected(false);
         return result;
     }
 }

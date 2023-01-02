@@ -129,18 +129,6 @@ public class PlantController {
         return ResponseEntity.ok(plant);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/imageTest")
-    public ResponseEntity<FileResponse> uploadFile(@RequestParam("file") MultipartFile file){
-        String fileName = fileStorageService.storeFile(file);
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/plants/test/")
-                .path(fileName)
-                .toUriString();
-
-        FileResponse fileResponse = new FileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
-        return new ResponseEntity<FileResponse>(fileResponse, HttpStatus.OK);
-    }
-
     @RequestMapping(method = RequestMethod.GET,path = "test/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request){
         Resource resource = fileStorageService.loadFilesResource(fileName);

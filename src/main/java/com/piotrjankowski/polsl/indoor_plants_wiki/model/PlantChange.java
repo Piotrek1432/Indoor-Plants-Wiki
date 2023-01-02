@@ -10,7 +10,9 @@ public class PlantChange {
     private int id;
     private String name;
     private String description;
+    private String imagePath;
     private boolean accepted;
+    private boolean rejected;
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
@@ -54,5 +56,21 @@ public class PlantChange {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public boolean isRejected() {
+        return rejected;
+    }
+
+    public void setRejected(boolean rejected) {
+        this.rejected = rejected;
     }
 }

@@ -30,8 +30,8 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file){
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public String storeFile(MultipartFile file, String namePrefix){
+        String fileName = StringUtils.cleanPath(namePrefix+file.getOriginalFilename());
         try {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
