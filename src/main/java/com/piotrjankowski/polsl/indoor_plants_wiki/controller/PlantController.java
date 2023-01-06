@@ -148,4 +148,13 @@ public class PlantController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path="category/{id}", params = {"!page","!size","!sort"})
+    ResponseEntity<List<Plant>> readAllPlantsFromCategory(
+            @PathVariable
+            int id
+    ){
+        logger.info("Exposing all plants from category!");
+        return ResponseEntity.ok(repository.findByCategories_Id(id));
+    }
 }

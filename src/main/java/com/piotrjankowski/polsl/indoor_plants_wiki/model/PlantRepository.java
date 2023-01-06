@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface PlantRepository {
     List<Plant> findAll();
+    List<Plant> findByCategories_Id(int id);
     Page<Plant> findAll(Pageable page);
     Optional<Plant> findById(Integer id);
     List<Plant> findByName(String name);
