@@ -77,4 +77,8 @@ public class Category {
     public void addSinglePlant(Plant plant) {
         this.assignedPlants.add(plant);
     }
+
+    public void removeSinglePlant(Plant plant) {
+        this.assignedPlants.remove(plant);
+    }
 }

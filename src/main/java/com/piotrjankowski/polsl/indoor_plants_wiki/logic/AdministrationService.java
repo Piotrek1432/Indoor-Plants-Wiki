@@ -23,9 +23,17 @@ public class AdministrationService {
     public void newPlantSave(int id){
         PlantChange plantChange = plantChangeRepository.findById(id);
         Plant plant = new Plant();
+        if(plantChange.getPlant()!=null){
+            plant = plantChange.getPlant();
+        }
         plant.setAuthor(plantChange.getAuthor());
         plant.setName(plantChange.getName());
         plant.setDescription(plantChange.getDescription());
+        plant.setPositiveQualities(plantChange.getPositiveQualities());
+        plant.setInsolation(plantChange.getInsolation());
+        plant.setWatering(plantChange.getWatering());
+        plant.setFertilization(plantChange.getFertilization());
+        plant.setBadSignals(plantChange.getBadSignals());
         plant.setImagePath(plantChange.getImagePath());
 
         plantRepository.save(plant);

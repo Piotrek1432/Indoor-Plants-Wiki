@@ -40,7 +40,7 @@ public class CategoryWriteModel {
 //        this.plants = plants;
 //    }
 
-    public Category toCategory(User author,Plant plant){
+    public Category toCategory(User author){
         Category result = new Category();
         result.setName(name);
         result.setDescription(description);
@@ -50,7 +50,6 @@ public class CategoryWriteModel {
 //                        .map(source -> source.toPlant(result))
 //                        .collect(Collectors.toSet())
 //        );
-        result.addSinglePlant(plant);
         return result;
     }
 }

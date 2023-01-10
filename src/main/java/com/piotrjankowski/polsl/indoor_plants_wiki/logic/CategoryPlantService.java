@@ -21,7 +21,7 @@ public class CategoryPlantService {
     }
 
     public CategoryReadModel createCategory(CategoryWriteModel source, User author){
-        Category result = repository.save(source.toCategory(author,plantRepository.findById(5).orElse(null)));
+        Category result = repository.save(source.toCategory(author));
         //result.getAssignedPlants().forEach(plant -> plantRepository.save(plant));
         return new CategoryReadModel(result);
     }
@@ -31,6 +31,15 @@ public class CategoryPlantService {
         Plant plant = plantRepository.findById(plantId).orElse(null);
         if(category!=null){
             category.addSinglePlant(plant);
+            repository.save(category);
+        }
+    }
+
+    public void deleteToCategory(int plantId, int categoryId){
+        Category category = repository.findById(categoryId).orElse(null);
+        Plant plant = plantRepository.findById(plantId).orElse(null);
+        if(category!=null){
+            category.removeSinglePlant(plant);
             repository.save(category);
         }
     }

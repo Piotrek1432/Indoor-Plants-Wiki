@@ -9,14 +9,28 @@ public class PlantChange {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String name;
+    @Column(length = 600)
     private String description;
+    @Column(length = 500)
+    private String positiveQualities;
+    @Column(length = 300)
+    private String insolation;
+    @Column(length = 300)
+    private String watering;
+    @Column(length = 500)
+    private String fertilization;
+    @Column(length = 500)
+    private String badSignals;
     private String imagePath;
     private boolean accepted;
     private boolean rejected;
     @Embedded
     private Audit audit = new Audit();
     @ManyToOne
+    private Plant plant;
+    @ManyToOne
     private User author;
+
 
     public int getId() {
         return id;
@@ -72,5 +86,53 @@ public class PlantChange {
 
     public void setRejected(boolean rejected) {
         this.rejected = rejected;
+    }
+
+    public String getPositiveQualities() {
+        return positiveQualities;
+    }
+
+    public void setPositiveQualities(String positiveQualities) {
+        this.positiveQualities = positiveQualities;
+    }
+
+    public String getInsolation() {
+        return insolation;
+    }
+
+    public void setInsolation(String insolation) {
+        this.insolation = insolation;
+    }
+
+    public String getWatering() {
+        return watering;
+    }
+
+    public void setWatering(String watering) {
+        this.watering = watering;
+    }
+
+    public String getFertilization() {
+        return fertilization;
+    }
+
+    public void setFertilization(String fertilization) {
+        this.fertilization = fertilization;
+    }
+
+    public String getBadSignals() {
+        return badSignals;
+    }
+
+    public void setBadSignals(String badSignals) {
+        this.badSignals = badSignals;
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(Plant plant) {
+        this.plant = plant;
     }
 }

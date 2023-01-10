@@ -28,6 +28,11 @@ public class TestConfiguration {
             }
 
             @Override
+            public List<Plant> findByCategories_Id(int id) {
+                return null;
+            }
+
+            @Override
             public Page<Plant> findAll(Pageable page) {
                 return null;
             }
