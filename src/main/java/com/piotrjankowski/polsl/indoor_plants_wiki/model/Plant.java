@@ -40,6 +40,9 @@ public class Plant {
     @OneToMany(mappedBy = "plant")
     @JsonIgnore
     private Set<PlantChange> plantChanges;
+    @OneToMany(mappedBy = "plant")
+    @JsonIgnore
+    private Set<Comment> comments;
     @ManyToOne
     private User author;
 
@@ -174,5 +177,13 @@ public class Plant {
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

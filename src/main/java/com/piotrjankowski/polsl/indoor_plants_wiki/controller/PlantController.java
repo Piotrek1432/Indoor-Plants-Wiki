@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -151,7 +152,9 @@ public class PlantController {
             int id
     ){
         logger.info("Exposing all plants from category!");
-        return ResponseEntity.ok(repository.findByCategories_Id(id));
+        List<Plant> plants = repository.findByCategories_Id(id);
+        plants.sort(Comparator.comparing(Plant::getName));
+        return ResponseEntity.ok(plants);
     }
 
     @RequestMapping(method = RequestMethod.GET, path="outOfCategory/{id}", params = {"!page","!size","!sort"})
@@ -163,6 +166,7 @@ public class PlantController {
         List<Plant> plants = repository.findAll();
         List<Plant> plantsInCategory = repository.findByCategories_Id(id);
         plants.removeAll(plantsInCategory);
+        plants.sort(Comparator.comparing(Plant::getName));
         return ResponseEntity.ok(plants);
     }
 

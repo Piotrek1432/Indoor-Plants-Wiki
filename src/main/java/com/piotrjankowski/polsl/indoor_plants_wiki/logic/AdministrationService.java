@@ -25,8 +25,9 @@ public class AdministrationService {
         Plant plant = new Plant();
         if(plantChange.getPlant()!=null){
             plant = plantChange.getPlant();
+        }else{
+            plant.setAuthor(plantChange.getAuthor());
         }
-        plant.setAuthor(plantChange.getAuthor());
         plant.setName(plantChange.getName());
         plant.setDescription(plantChange.getDescription());
         plant.setPositiveQualities(plantChange.getPositiveQualities());
