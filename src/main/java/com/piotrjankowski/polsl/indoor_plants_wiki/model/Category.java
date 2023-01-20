@@ -5,6 +5,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class Category {
     @Embedded
     private Audit audit = new Audit();
     @ManyToMany
-    private Set<Plant> assignedPlants;
+    private Set<Plant> assignedPlants = new HashSet<>();
 
     @ManyToOne
     private User author;
@@ -71,5 +72,13 @@ public class Category {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public void addSinglePlant(Plant plant) {
+        this.assignedPlants.add(plant);
+    }
+
+    public void removeSinglePlant(Plant plant) {
+        this.assignedPlants.remove(plant);
     }
 }

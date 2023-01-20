@@ -1,9 +1,13 @@
 server:
   port: 8071
 spring:
-  h2.console:
-      enabled: false
-      path: '/console'
-  datasource.url: 'jdbc:h2:file:/Users/Piotr/bazaH2/baza'
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/ipw?useSSL=false'
+    username: root
+    password: sysop
   jpa.hibernate.ddl-auto: create-drop
-plant.allowMultiplePlantsFromTemplate: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,8 +1,6 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.logic;
 
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.Category;
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.CategoryRepository;
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.*;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryReadModel;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryWriteModel;
 import org.springframework.stereotype.Service;
@@ -16,15 +14,34 @@ public class CategoryPlantService {
     private CategoryRepository repository;
     private PlantRepository plantRepository;
 
+
     CategoryPlantService(final CategoryRepository repository, PlantRepository plantRepository){
         this.repository = repository;
         this.plantRepository = plantRepository;
     }
 
-    public CategoryReadModel createCategory(CategoryWriteModel source){
-        Category result = repository.save(source.toCategory());
-        result.getAssignedPlants().forEach(plant -> plantRepository.save(plant));
+    public CategoryReadModel createCategory(CategoryWriteModel source, User author){
+        Category result = repository.save(source.toCategory(author));
+        //result.getAssignedPlants().forEach(plant -> plantRepository.save(plant));
         return new CategoryReadModel(result);
+    }
+
+    public void addToCategory(int plantId, int categoryId){
+        Category category = repository.findById(categoryId).orElse(null);
+        Plant plant = plantRepository.findById(plantId).orElse(null);
+        if(category!=null){
+            category.addSinglePlant(plant);
+            repository.save(category);
+        }
+    }
+
+    public void deleteToCategory(int plantId, int categoryId){
+        Category category = repository.findById(categoryId).orElse(null);
+        Plant plant = plantRepository.findById(plantId).orElse(null);
+        if(category!=null){
+            category.removeSinglePlant(plant);
+            repository.save(category);
+        }
     }
 
     public List<CategoryReadModel> readAllCategories(){

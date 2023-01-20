@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface CommentRepository {
     List<Comment> findAll();
+    List<Comment> findAllByPlant(Plant plant);
     Optional<Comment> findById(Integer id);
     Comment save(Comment commentToSave);
 }

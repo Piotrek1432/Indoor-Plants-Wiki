@@ -52,6 +52,25 @@ public class WikiController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
+    @RequestMapping(method = RequestMethod.POST, path = "/modifyPlant/{plantId}")
+    ResponseEntity<?> modifyPlant(
+            @AuthenticationPrincipal User user,
+            @RequestBody
+            NewPlantWriteModel modifyPlant,
+            @PathVariable
+            int plantId
+    ){
+        logger.info("Modify plant: "+modifyPlant.getName());
+        logger.info("Modify plant: "+modifyPlant.getImageUri());
+        if(modifyPlant.getName() != null){
+            service.addPlantModify(modifyPlant, user, plantId);
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(method = RequestMethod.PUT,path = "/addImage/{namePrefix}")
     public ResponseEntity<FileResponse> uploadFile(
             @PathVariable String namePrefix,

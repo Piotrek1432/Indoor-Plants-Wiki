@@ -5,23 +5,20 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.FileResponse;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.SignaturesModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -147,5 +144,45 @@ public class PlantController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(resource);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path="category/{id}", params = {"!page","!size","!sort"})
+    ResponseEntity<List<Plant>> readAllPlantsFromCategory(
+            @PathVariable
+            int id
+    ){
+        logger.info("Exposing all plants from category!");
+        List<Plant> plants = repository.findByCategories_Id(id);
+        plants.sort(Comparator.comparing(Plant::getName));
+        return ResponseEntity.ok(plants);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path="outOfCategory/{id}", params = {"!page","!size","!sort"})
+    ResponseEntity<List<Plant>> readAllPlantsOutOfCategory(
+            @PathVariable
+            int id
+    ){
+        logger.info("Exposing all plants from category!");
+        List<Plant> plants = repository.findAll();
+        List<Plant> plantsInCategory = repository.findByCategories_Id(id);
+        plants.removeAll(plantsInCategory);
+        plants.sort(Comparator.comparing(Plant::getName));
+        return ResponseEntity.ok(plants);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path="readSignatures/{id}")
+    ResponseEntity<SignaturesModel> readSignatures(
+            @PathVariable
+            int id
+    ){
+        logger.info("reading Signatures!");
+        Plant plant = repository.findById(id).orElse(null);
+        if(plant==null) ResponseEntity.badRequest().build();
+        SignaturesModel signaturesModel = new SignaturesModel(
+                plant.getAuthor().getUsername(),
+                plant.getCreatedOn(),
+                plant.getUpdatedOn()
+        );
+        return ResponseEntity.ok(signaturesModel);
     }
 }

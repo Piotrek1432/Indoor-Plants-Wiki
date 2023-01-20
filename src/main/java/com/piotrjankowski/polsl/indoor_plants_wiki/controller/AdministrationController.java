@@ -5,6 +5,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.logic.AdministrationService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.WikiService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantChange;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantChangeRepository;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,16 @@ import java.util.List;
 public class AdministrationController {
     public static final Logger logger = LoggerFactory.getLogger(AdministrationController.class);
 
-    private PlantChangeRepository plantChangeRepository;
+    private final PlantChangeRepository plantChangeRepository;
+    private final PlantRepository plantRepository;
 
     private final WikiService service;
 
     private final AdministrationService administrationService;
 
-    public AdministrationController(PlantChangeRepository plantChangeRepository, WikiService service, AdministrationService administrationService) {
+    public AdministrationController(PlantChangeRepository plantChangeRepository, PlantRepository plantRepository, WikiService service, AdministrationService administrationService) {
         this.plantChangeRepository = plantChangeRepository;
+        this.plantRepository = plantRepository;
         this.service = service;
         this.administrationService = administrationService;
     }
@@ -45,6 +48,10 @@ public class AdministrationController {
             int id
     ){
         logger.info("PlantChange id: "+id);
+        if(plantRepository.existsByName(plantChangeRepository.findById(id).getName()))
+        {
+            if(plantChangeRepository.findById(id).getPlant()==null) return ResponseEntity.badRequest().build();
+        }
         administrationService.newPlantSave(id);
 
         return ResponseEntity.ok().build();
