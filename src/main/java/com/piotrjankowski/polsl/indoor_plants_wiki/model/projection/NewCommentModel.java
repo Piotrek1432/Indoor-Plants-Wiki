@@ -4,7 +4,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.model.Comment;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 
-public class NewCmmentModel {
+public class NewCommentModel {
     private String comment;
 
     public String getComment() {

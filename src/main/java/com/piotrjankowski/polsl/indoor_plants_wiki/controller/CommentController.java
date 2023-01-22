@@ -1,7 +1,7 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.*;
-import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.NewCmmentModel;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.NewCommentModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class CommentController {
             @PathVariable
             int plantId,
             @RequestBody
-            NewCmmentModel newComment
+            NewCommentModel newComment
     ){
         logger.info("Adding comment: "+newComment.getComment());
         repository.save(newComment.toComment(user,plantRepository.findById(plantId).orElse(null)));

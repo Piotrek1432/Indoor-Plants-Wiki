@@ -1,4 +1,4 @@
-package com.piotrjankowski.polsl.indoor_plants_wiki.dto;
+package com.piotrjankowski.polsl.indoor_plants_wiki.model.projection;
 
 public class AuthCredencialsRequest {
     private String username;

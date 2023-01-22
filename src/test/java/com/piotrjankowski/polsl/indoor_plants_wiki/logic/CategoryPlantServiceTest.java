@@ -65,7 +65,13 @@ class CategoryPlantServiceTest {
             public List<Category> findAll(){
                 return new ArrayList<>(map.values());
             }
-            @Override
+
+        @Override
+        public Boolean existsByName(String name) {
+            return null;
+        }
+
+        @Override
             public Optional<Category> findById(Integer id){
                 return Optional.ofNullable(map.get(1));
             }
