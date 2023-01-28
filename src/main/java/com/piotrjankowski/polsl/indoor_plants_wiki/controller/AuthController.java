@@ -63,7 +63,7 @@ public class AuthController {
 
             User user = (User) authenticate.getPrincipal();
             LoginAnswer loginAnswer = new LoginAnswer();
-            loginAnswer.setAnswer(jwtUtil.generateToken(user));
+            loginAnswer.setJwt(jwtUtil.generateToken(user));
             loginAnswer.setRole(user.getRole());
             return ResponseEntity.ok()
                     .body(loginAnswer);

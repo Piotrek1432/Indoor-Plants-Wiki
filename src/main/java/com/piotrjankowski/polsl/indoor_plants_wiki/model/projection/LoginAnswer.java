@@ -1,17 +1,17 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.model.projection;
 
 public class LoginAnswer {
-    private String answer;
+    private String jwt;
     private String role;
 
     public LoginAnswer(){}
 
-    public String getAnswer() {
-        return answer;
+    public String getJwt() {
+        return jwt;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     public String getRole() {
