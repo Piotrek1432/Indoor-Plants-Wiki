@@ -42,7 +42,9 @@ public class PlantController {
     @RequestMapping(method = RequestMethod.GET, params = {"!page","!size","!sort"})
     ResponseEntity<List<PlantPreviewModel>> readAllPlants(){
         logger.info("Exposing all plants!");
-        return ResponseEntity.ok(repository.findAll().stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
+        List<Plant> plants = repository.findAll();
+        plants.sort(Comparator.comparing(Plant::getName));
+        return ResponseEntity.ok(plants.stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.GET)
