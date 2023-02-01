@@ -10,7 +10,5 @@ import java.util.List;
 
 @Repository
 public interface SqlCategoryRepository extends CategoryRepository,JpaRepository<Category, Integer> {
-    /*@Override
-    @Query("select distinct c from Category c join fetch c.plants")
-    List<Category> findAll();*/
+
 }

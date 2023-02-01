@@ -1,12 +1,11 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
-import com.piotrjankowski.polsl.indoor_plants_wiki.dto.AuthCredencialsRequest;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.AuthCredencialsRequest;
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.JwtUtil;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.UserRepository;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.LoginAnswer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -64,7 +63,7 @@ public class AuthController {
 
             User user = (User) authenticate.getPrincipal();
             LoginAnswer loginAnswer = new LoginAnswer();
-            loginAnswer.setAnswer(jwtUtil.generateToken(user));
+            loginAnswer.setJwt(jwtUtil.generateToken(user));
             loginAnswer.setRole(user.getRole());
             return ResponseEntity.ok()
                     .body(loginAnswer);

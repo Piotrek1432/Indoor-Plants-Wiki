@@ -5,6 +5,7 @@ import com.piotrjankowski.polsl.indoor_plants_wiki.logic.PlantService;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.Plant;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.PlantRepository;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
+import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.PlantPreviewModel;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.SignaturesModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/plants")
@@ -37,25 +39,18 @@ public class PlantController {
         this.fileStorageService = fileStorageService;
     }
 
-    /**
-     * Experimental async
-     **/
-    @RequestMapping(method = RequestMethod.GET, path = "/readAllPlantsAsync", params = {"!page","!size","!sort"})
-    CompletableFuture<ResponseEntity<List<Plant>>> readAllPlantsAsync(){
-        logger.info("Exposing all plants!");
-        return service.findAllAsync().thenApply(ResponseEntity::ok);
-    }
-
     @RequestMapping(method = RequestMethod.GET, params = {"!page","!size","!sort"})
-    ResponseEntity<List<Plant>> readAllPlants(){
+    ResponseEntity<List<PlantPreviewModel>> readAllPlants(){
         logger.info("Exposing all plants!");
-        return ResponseEntity.ok(repository.findAll());
+        List<Plant> plants = repository.findAll();
+        plants.sort(Comparator.comparing(Plant::getName));
+        return ResponseEntity.ok(plants.stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity<List<Plant>> readAllPlants(Pageable page){
+    ResponseEntity<List<PlantPreviewModel>> readAllPlants(Pageable page){
         logger.info("Exposing plants, pageable");
-        return ResponseEntity.ok(repository.findAll(page).getContent());
+        return ResponseEntity.ok(repository.findAll(page).stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
@@ -147,18 +142,18 @@ public class PlantController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path="category/{id}", params = {"!page","!size","!sort"})
-    ResponseEntity<List<Plant>> readAllPlantsFromCategory(
+    ResponseEntity<List<PlantPreviewModel>> readAllPlantsFromCategory(
             @PathVariable
             int id
     ){
         logger.info("Exposing all plants from category!");
         List<Plant> plants = repository.findByCategories_Id(id);
         plants.sort(Comparator.comparing(Plant::getName));
-        return ResponseEntity.ok(plants);
+        return ResponseEntity.ok(plants.stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.GET, path="outOfCategory/{id}", params = {"!page","!size","!sort"})
-    ResponseEntity<List<Plant>> readAllPlantsOutOfCategory(
+    ResponseEntity<List<PlantPreviewModel>> readAllPlantsOutOfCategory(
             @PathVariable
             int id
     ){
@@ -167,7 +162,7 @@ public class PlantController {
         List<Plant> plantsInCategory = repository.findByCategories_Id(id);
         plants.removeAll(plantsInCategory);
         plants.sort(Comparator.comparing(Plant::getName));
-        return ResponseEntity.ok(plants);
+        return ResponseEntity.ok(plants.stream().map(PlantPreviewModel::new).collect(Collectors.toList()));
     }
 
     @RequestMapping(method = RequestMethod.GET, path="readSignatures/{id}")

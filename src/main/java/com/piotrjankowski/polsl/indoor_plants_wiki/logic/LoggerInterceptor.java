@@ -1,4 +1,4 @@
-package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
+package com.piotrjankowski.polsl.indoor_plants_wiki.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

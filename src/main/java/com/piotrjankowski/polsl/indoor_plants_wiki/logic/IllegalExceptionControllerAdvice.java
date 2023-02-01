@@ -1,4 +1,4 @@
-package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
+package com.piotrjankowski.polsl.indoor_plants_wiki.logic;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

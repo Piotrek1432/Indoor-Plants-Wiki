@@ -1,11 +1,11 @@
 package com.piotrjankowski.polsl.indoor_plants_wiki.controller;
 
 import com.piotrjankowski.polsl.indoor_plants_wiki.logic.CategoryPlantService;
+import com.piotrjankowski.polsl.indoor_plants_wiki.logic.IllegalExceptionProcrssing;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.CategoryRepository;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.User;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryReadModel;
 import com.piotrjankowski.polsl.indoor_plants_wiki.model.projection.CategoryWriteModel;
-import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -74,18 +74,6 @@ public class CategoryController {
 
         return ResponseEntity.ok().build();
     }
-
-//    @RequestMapping(method = RequestMethod.POST)
-//    ResponseEntity<CategoryReadModel> removeFromCategory(
-//            @AuthenticationPrincipal User user,
-//            @RequestBody
-//            @Valid
-//            CategoryWriteModel newCategory
-//    ){
-//        logger.info("Remove from category!");
-//
-//        return ResponseEntity.created(URI.create("/")).body(service.createCategory(newCategory, user));
-//    }
 
     @RequestMapping(method = RequestMethod.GET, params = {"!page","!size","!sort"})
     ResponseEntity<List<CategoryReadModel>> readAllCategories(){
